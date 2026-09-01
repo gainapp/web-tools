@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Merger Tool - GAIN</title>
+    <!-- Font: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Theme Colors */
+            --bg-body: #f0f2f5;
+            --card-bg: #ffffff;
+            --header-bg: #1c1c1c;
+            --accent-border: #70c4c4;
+            --button-bg: #4d4d4d;
+            --button-hover: #333333;
+            --text-main: #555555;
+            --cta-yellow: #f2ff66;
+            --text-red: #ff0000;
+            --divider: #e0e0e0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- MENU STYLE --- */
+        .navbar-pill {
+            background-color: var(--header-bg);
+            width: 100%;
+            max-width: 1200px;
+            border-radius: 80px;
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            /* REDUCED MARGIN */
+            box-sizing: border-box;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-svg {
+            height: 35px;
+            fill: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            margin-left: auto;
+            margin-right: 30px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #e0e0e0;
+            font-size: 15px;
+            font-weight: 400;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: white;
+            font-weight: 500;
+        }
+
+        .nav-cta {
+            background-color: var(--cta-yellow);
+            color: #1c1c1c;
+            text-decoration: none;
+            padding: 10px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .nav-cta:hover {
+            transform: scale(1.02);
+            background-color: #e6f550;
+        }
+
+        /* --- TOOL STYLES --- */
+
+        /* Main Card Container */
+        form {
+            background-color: var(--card-bg);
+            padding: 40px 50px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+            border-radius: 15px;
+            width: 100%;
+            max-width: 750px;
+            text-align: center;
+            position: relative;
+            border-top: 6px solid var(--accent-border);
+        }
+
+        /* Title Style (No Background) */
+        h1.tool-title {
+            margin: 0 0 25px 0;
+            font-size: 32px;
+            font-weight: 700;
+            color: #1c1c1c;
+        }
+
+        /* Instructions List */
+        .instructions {
+            text-align: left;
+            font-size: 15px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 25px;
+            padding-left: 10px;
+        }
+
+        .instructions li {
+            list-style: disc;
+            margin-bottom: 5px;
+            margin-left: 20px;
+        }
+
+        .highlight-red {
+            color: #ff0000;
+            font-weight: 700;
+        }
+
+        /* Upload Area */
+        .file-upload-container {
+            border: 2px solid var(--accent-border);
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            transition: background-color 0.2s;
+        }
+
+        .file-upload-container:hover {
+            background-color: #f9fbfb;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .upload-label {
+            font-family: 'Courier New', monospace;
+            color: #777;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* File List items */
+        .file-names {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .file-tag {
+            background: #eee;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .remove-file {
+            cursor: pointer;
+            color: #999;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .remove-file:hover {
+            color: red;
+        }
+
+        /* Option Checkbox */
+        .option {
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        /* Main Button (Dark Grey) */
+        button#mergeButton {
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 0;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 20px;
+        }
+
+        button#mergeButton:hover {
+            background-color: var(--button-hover);
+        }
+
+        /* Footer Info */
+        .footer-info {
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        /* Download Link Styled */
+        #downloadLink {
+            display: inline-block;
+            margin-top: 10px;
+            color: var(--accent-border);
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 1px dashed var(--accent-border);
+        }
+
+        #downloadLink:hover {
+            border-bottom-style: solid;
+        }
+
+        /* Mobile Response */
+        @media (max-width: 900px) {
+            .navbar-pill {
+                flex-direction: column;
+                border-radius: 20px;
+                gap: 15px;
+                padding: 20px;
+            }
+
+            .nav-links {
+                margin: 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVIGATION BAR (GAIN STYLE) -->
+    <div class="navbar-pill">
+        <div class="nav-left">
+            <!-- GAIN Logo SVG -->
+            <svg class="logo-svg" viewBox="550 410 850 260" xmlns="http://www.w3.org/2000/svg">
+                <g>
+                    <path
+                        d="M752.7 575.16c.31 0 .51.34.35.61-3.72 6.2-9.01 11.18-15.8 14.86-9.15 4.96-20.79 7.47-34.58 7.47-17.39 0-31.98-5.44-42.2-15.73-10.21-10.28-15.6-24.93-15.6-42.37s5.39-32.09 15.6-42.37c10.22-10.29 24.81-15.73 42.2-15.73 26.45 0 44.81 10.03 51.75 28.24.06.16.21.26.38.25l58.78-2.51c.25-.01.43-.24.38-.49-5.01-23.08-18.01-42.53-37.61-56.27-19.73-13.83-45.21-21.13-73.68-21.13-16.6 0-32.31 2.72-46.7 8.07-14.1 5.25-26.57 12.89-37.06 22.71-10.52 9.86-18.72 21.6-24.36 34.9-5.78 13.64-8.72 28.55-8.72 44.32s2.93 30.68 8.72 44.32c5.64 13.3 13.84 25.04 24.36 34.9 10.48 9.82 22.95 17.46 37.06 22.71 14.39 5.36 30.1 8.07 46.7 8.07 37.5 0 68.21-11.72 88.81-33.9 20-21.53 29.17-51.76 26.53-87.43l-.29-3.86a.403.403 0 0 0-.4-.37H703.55c-.22 0-.4.18-.4.4v49.92c0 .22.18.4.4.4h49.15Z">
+                    </path>
+                    <path
+                        d="M881.55 590.6h82.37c.16 0 .31.1.37.25l21.18 52.96c.06.15.21.25.37.25h116.63c.22 0 .4-.18.4-.4V436.34c0-.22-.18-.4-.4-.4h-57.05c-.22 0-.4.18-.4.4v197.08c0 .43-.59.55-.76.16l-84.85-197.4a.39.39 0 0 0-.37-.24h-72.61c-.16 0-.3.09-.37.24L796.94 643.5c-.11.26.08.56.37.56h62.32c.16 0 .31-.1.37-.25l21.18-52.96c.06-.15.21-.25.37-.25m19.64-50.07 21.17-52.8c.13-.33.61-.33.74 0l21.17 52.8c.1.26-.09.55-.37.55h-42.33c-.28 0-.47-.28-.37-.55Z">
+                    </path>
+                    <path
+                        d="M1120.1 436.34v207.32c0 .22.18.4.4.4h56.75c.22 0 .4-.18.4-.4V495.68c0-.44.6-.55.77-.15l62.03 148.29c.06.15.21.24.37.24h92.95c.22 0 .4-.18.4-.4V436.34c0-.22-.18-.4-.4-.4h-56.75c-.22 0-.4.18-.4.4v147.99c0 .44-.6.55-.77.15l-62.03-148.29a.39.39 0 0 0-.37-.24h-92.95c-.22 0-.4.18-.4.4Z">
+                    </path>
+                </g>
+            </svg>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="#" class="nav-link active">CSV Merger</a>
+            <a href="https://teamwonk.com/drtool/" class="nav-link" target="_blank">Domain Rate</a>
+            <a href="PAGE_FINDER.html" class="nav-link">Page Finder</a>
+            <a href="KEYWORDS_GENERATOR.html" class="nav-link">Keywords Generator</a>
+        </div>
+
+        <a href="#" class="nav-cta">Contact</a>
+    </div>
+
+    <!-- TOOL CONTAINER -->
+    <form>
+        <!-- Version Removed -->
+
+        <!-- Title Without Pill Background -->
+        <h1 class="tool-title">CSV Merger Tool</h1>
+
+        <!-- Instructions List -->
+        <div class="instructions">
+            <ul>
+                <li>Combine: Upload multiple .csv files to merge them.</li>
+                <li>Format: Standard Comma or Tab separated values.</li>
+                <li><span class="highlight-red">Recommended:</span> Ensure all files have matching headers for best
+                    results.</li>
+                <li>Limit: Browser memory limits apply for very large files.</li>
+            </ul>
+        </div>
+
+        <!-- Input Area (Styled like Textarea) -->
+        <div class="file-upload-container">
+            <label for="csvFiles" class="upload-label">
+                <span id="uploadText">Click here to select CSV files...</span>
+                <div id="fileNames" class="file-names"></div>
+            </label>
+            <input type="file" id="csvFiles" multiple accept=".csv" onchange="handleFileSelect()">
+        </div>
+
+        <div class="option">
+            <label>
+                <input type="checkbox" id="mergeHeaders" checked>
+                Merge all headers into one row
+            </label>
+        </div>
+
+        <!-- Main Button -->
+        <button id="mergeButton" type="button" onclick="mergeCSVFiles()" style="display: none;">Merge Files Now</button>
+
+        <!-- Status & Download -->
+        <p id="mergingStatus" style="display: none; color: #666;">Processing...</p>
+        <a id="downloadLink" href="#" download="merged.csv" style="display: none;">Click here if download did not start
+            automatically</a>
+
+        <!-- Footer -->
+        <div class="footer-info">
+            © 2026 GAIN CSV Merger Tool V3.0
+        </div>
+    </form>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let selectedFiles = [];
+
+        function handleFileSelect() {
+            const fileInput = document.getElementById('csvFiles');
+            const newFiles = Array.from(fileInput.files);
+            selectedFiles = selectedFiles.concat(newFiles);
+            updateFileList();
+        }
+
+        function updateFileList() {
+            const fileNamesDiv = document.getElementById('fileNames');
+            const uploadText = document.getElementById('uploadText');
+            
+            fileNamesDiv.innerHTML = '';
+
+            if (selectedFiles.length > 0) {
+                uploadText.style.display = 'none'; // Hide placeholder text
+                
+                selectedFiles.forEach((file, index) => {
+                    const tag = document.createElement('div');
+                    tag.classList.add('file-tag');
+                    tag.innerHTML = `${file.name} <span class="remove-file" onclick="removeFile(event, ${index})">×</span>`;
+                    fileNamesDiv.appendChild(tag);
+                });
+            } else {
+                uploadText.style.display = 'block';
+            }
+
+            const mergeButton = document.getElementById('mergeButton');
+            // Show button if files exist
+            mergeButton.style.display = selectedFiles.length > 0 ? 'block' : 'none';
+        }
+
+        function removeFile(event, index) {
+            event.preventDefault(); // Prevent opening file dialog
+            event.stopPropagation();
+            selectedFiles.splice(index, 1);
+            updateFileList();
+        }
+
+        function mergeCSVFiles() {
+            if (selectedFiles.length === 0) {
+                alert('Please select at least one CSV file.');
+                return;
+            }
+
+            const mergeHeaders = document.getElementById('mergeHeaders').checked;
+            const mergingStatus = document.getElementById('mergingStatus');
+            mergingStatus.style.display = 'block';
+
+            const promises = selectedFiles.map(file => readFileAsText(file));
+
+            Promise.all(promises).then(contents => {
+                const parsedContents = contents.map(content => parseCSV(content));
+                const mergedCSV = mergeParsedContents(parsedContents, mergeHeaders);
+                const csvString = convertToCSV(mergedCSV);
+                // Call Updated Download Function
+                createDownloadLink(csvString);
+                mergingStatus.style.display = 'none';
+            }).catch(error => {
+                console.error('Error reading files:', error);
+                alert('Error reading files');
+                mergingStatus.style.display = 'none';
+            });
+        }
+
+        function readFileAsText(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(reader.error);
+                reader.readAsText(file);
+            });
+        }
+
+        function parseCSV(content) {
+            const lines = content.split(/\r?\n/).filter(line => line.trim().length > 0);
+            const headers = lines[0].split('\t').map(header => header.trim());
+            // Basic detection if comma separated instead of tab
+            const isComma = lines[0].indexOf('\t') === -1 && lines[0].indexOf(',') > -1;
+            const splitter = isComma ? ',' : '\t';
+            
+            const realHeaders = lines[0].split(splitter).map(h => h.trim());
+
+            const rows = lines.slice(1).map(line => {
+                const values = line.split(splitter);
+                const row = {};
+                realHeaders.forEach((header, index) => {
+                    row[header] = values[index] || '';
+                });
+                return row;
+            });
+            return { headers: realHeaders, rows };
+        }
+
+        function mergeParsedContents(parsedContents, mergeHeaders) {
+            if (mergeHeaders) {
+                const allHeaders = Array.from(new Set(parsedContents.flatMap(parsed => parsed.headers)));
+                const mergedData = parsedContents.flatMap(parsed => parsed.rows.map(row => {
+                    const completeRow = {};
+                    allHeaders.forEach(header => {
+                        completeRow[header] = row[header] || '';
+                    });
+                    return completeRow;
+                }));
+                return { headers: allHeaders, rows: mergedData };
+            } else {
+                let mergedData = [];
+                parsedContents.forEach(parsed => {
+                    const { headers, rows } = parsed;
+                    const headerRow = {};
+                    headers.forEach(header => {
+                        headerRow[header] = header;
+                    });
+                    mergedData.push(headerRow, ...rows);
+                });
+                const allHeaders = Array.from(new Set(mergedData.flatMap(row => Object.keys(row))));
+                return { headers: allHeaders, rows: mergedData };
+            }
+        }
+
+        function convertToCSV({ headers, rows }) {
+            const headerLine = headers.join(',');
+            const lines = rows.map(row => headers.map(header => row[header]).join(','));
+            return [headerLine, ...lines].join('\r\n');
+        }
+
+        function createDownloadLink(csvString) {
+            // 1. Generate Automatic Filename (Merged_YYYY-MM-DD_HH-MM-SS.csv)
+            const now = new Date();
+            const pad = (n) => n < 10 ? '0' + n : n;
+            const datePart = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+            const timePart = `${pad(now.getHours())}-${pad(now.getMinutes())}-${pad(now.getSeconds())}`;
+            const fileName = `Merged_${datePart}_${timePart}.csv`;
+        
+            // 2. Create Blob and URL
+            const blob = new Blob([csvString], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const link = document.getElementById('downloadLink');
+        
+            // 3. Setup Link
+            link.href = url;
+            link.setAttribute('download', fileName);
+            link.style.display = 'inline-block';
+            link.innerText = "Click here if download did not start automatically";
+
+            // 4. Trigger Automatic Click
+            link.click();
+        }
+    </script>
+</body>
+
+</html>

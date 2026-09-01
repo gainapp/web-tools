@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAIN Web Application Tools</title>
+    <!-- Font: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            /* Theme Colors */
+            --bg-body: #e6e9ef;
+            /* Light Blue-Gray Background */
+            --card-bg: #ffffff;
+            --header-bg: #2d2d2d;
+            /* Dark Gray for Header Pill */
+            --accent-border: #70c4c4;
+            /* Teal Accent */
+            --button-bg: #4d4d4d;
+            --button-hover: #333333;
+            --text-main: #555555;
+            --shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        /* --- TITLE SECTION (The Dark Pill) --- */
+        .title-section {
+            margin-bottom: 60px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-pill {
+            background-color: var(--header-bg);
+            color: white;
+            padding: 18px 50px;
+            border-radius: 80px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            /* Space between Logo and Text */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            margin-bottom: 25px;
+        }
+
+        /* Logo Sizing */
+        .logo-svg {
+            height: 40px;
+            width: auto;
+            fill: white;
+            display: block;
+        }
+
+        /* Text Styling inside Pill */
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.5px;
+            line-height: 1;
+            padding-top: 4px;
+            /* Slight visual alignment adjustment */
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #777;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        /* --- TOOLS GRID --- */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 10px;
+        }
+
+        /* Tool Cards */
+        .tool-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            border-top: 6px solid var(--accent-border);
+            /* Teal Accent Top */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: left;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .tool-card h2 {
+            font-size: 1.6rem;
+            margin: 0 0 15px 0;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .tool-card p {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        /* Card Buttons */
+        .tool-card a {
+            display: block;
+            width: 100%;
+            padding: 12px 0;
+            background: var(--button-bg);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            text-align: center;
+            transition: background 0.2s;
+        }
+
+        .tool-card a:hover {
+            background: var(--button-hover);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 80px;
+            font-size: 13px;
+            color: #888;
+            font-weight: 500;
+            padding-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-pill {
+                flex-direction: column;
+                gap: 10px;
+                padding: 20px 30px;
+                border-radius: 20px;
+            }
+
+            .header-title {
+                font-size: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Title Section -->
+        <div class="title-section">
+            <div class="header-pill">
+                <!-- GAIN SVG LOGO -->
+                <svg class="logo-svg" viewBox="550 410 850 260" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                        <path
+                            d="M752.7 575.16c.31 0 .51.34.35.61-3.72 6.2-9.01 11.18-15.8 14.86-9.15 4.96-20.79 7.47-34.58 7.47-17.39 0-31.98-5.44-42.2-15.73-10.21-10.28-15.6-24.93-15.6-42.37s5.39-32.09 15.6-42.37c10.22-10.29 24.81-15.73 42.2-15.73 26.45 0 44.81 10.03 51.75 28.24.06.16.21.26.38.25l58.78-2.51c.25-.01.43-.24.38-.49-5.01-23.08-18.01-42.53-37.61-56.27-19.73-13.83-45.21-21.13-73.68-21.13-16.6 0-32.31 2.72-46.7 8.07-14.1 5.25-26.57 12.89-37.06 22.71-10.52 9.86-18.72 21.6-24.36 34.9-5.78 13.64-8.72 28.55-8.72 44.32s2.93 30.68 8.72 44.32c5.64 13.3 13.84 25.04 24.36 34.9 10.48 9.82 22.95 17.46 37.06 22.71 14.39 5.36 30.1 8.07 46.7 8.07 37.5 0 68.21-11.72 88.81-33.9 20-21.53 29.17-51.76 26.53-87.43l-.29-3.86a.403.403 0 0 0-.4-.37H703.55c-.22 0-.4.18-.4.4v49.92c0 .22.18.4.4.4h49.15Z">
+                        </path>
+                        <path
+                            d="M881.55 590.6h82.37c.16 0 .31.1.37.25l21.18 52.96c.06.15.21.25.37.25h116.63c.22 0 .4-.18.4-.4V436.34c0-.22-.18-.4-.4-.4h-57.05c-.22 0-.4.18-.4.4v197.08c0 .43-.59.55-.76.16l-84.85-197.4a.39.39 0 0 0-.37-.24h-72.61c-.16 0-.3.09-.37.24L796.94 643.5c-.11.26.08.56.37.56h62.32c.16 0 .31-.1.37-.25l21.18-52.96c.06-.15.21-.25.37-.25m19.64-50.07 21.17-52.8c.13-.33.61-.33.74 0l21.17 52.8c.1.26-.09.55-.37.55h-42.33c-.28 0-.47-.28-.37-.55Z">
+                        </path>
+                        <path
+                            d="M1120.1 436.34v207.32c0 .22.18.4.4.4h56.75c.22 0 .4-.18.4-.4V495.68c0-.44.6-.55.77-.15l62.03 148.29c.06.15.21.24.37.24h92.95c.22 0 .4-.18.4-.4V436.34c0-.22-.18-.4-.4-.4h-56.75c-.22 0-.4.18-.4.4v147.99c0 .44-.6.55-.77.15l-62.03-148.29a.39.39 0 0 0-.37-.24h-92.95c-.22 0-.4.18-.4.4Z">
+                        </path>
+                    </g>
+                </svg>
+                <!-- Title Text -->
+                <h1 class="header-title">Web Application Tools</h1>
+            </div>
+            <p class="subtitle">Data processing tools designed to simplify your workflow.</p>
+        </div>
+
+        <!-- Grid of Tools -->
+        <div class="tools-grid">
+            <!-- Tool 1 -->
+            <div class="tool-card">
+                <div>
+                    <h2>CSV Merger</h2>
+                    <p>Merge multiple CSV files with ease. Combine headers automatically or merge distinct datasets into
+                        a single master file.</p>
+                </div>
+                <a href="CSV_MERGE.html">Launch CSV Fusion</a>
+            </div>
+
+            <!-- Tool 2 -->
+            <div class="tool-card">
+                <div>
+                    <h2>Domain Rate</h2>
+                    <p>Analyze and evaluate domain performance metrics to optimize your online presence using bulk
+                        analysis.</p>
+                </div>
+                <a href="https://teamwonk.com/drtool/">Launch Domain Rate</a>
+            </div>
+
+            <!-- Tool 3 -->
+            <div class="tool-card">
+                <div>
+                    <h2>Page Finder</h2>
+                    <p>Quickly identify resource pages, Skyscraper opportunities, and useful links from a list of URLs.
+                    </p>
+                </div>
+                <a href="PAGE_FINDER.html">Launch Page Finder</a>
+            </div>
+
+            <!-- Tool 4 -->
+            <div class="tool-card">
+                <div>
+                    <h2>Keyword Generator</h2>
+                    <p>Generate Google search queries for resource pages, guest posts, in-content links, and mention
+                        farming.</p>
+                </div>
+                <a href="KEYWORDS_GENERATOR.html">Launch Generator</a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            © 2026 GAIN Web Application Tools
+        </div>
+    </div>
+</body>
+
+</html>
