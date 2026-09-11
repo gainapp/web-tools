@@ -55,7 +55,6 @@
             justify-content: space-between;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 15px;
-            /* REDUCED MARGIN */
             box-sizing: border-box;
         }
 
@@ -119,7 +118,6 @@
             border-top: 6px solid var(--accent-border);
         }
 
-        /* Title Style (No Background) */
         h1.tool-title {
             margin: 0 0 10px 0;
             font-size: 32px;
@@ -141,6 +139,7 @@
             margin-bottom: 30px;
             border-bottom: 1px solid var(--border-light);
             padding-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .tab {
@@ -271,7 +270,8 @@
         }
 
         #sky-output-list,
-        #res-output-list {
+        #res-output-list,
+        #gp-output-list {
             list-style: none;
             padding: 0;
             max-height: 300px;
@@ -279,7 +279,8 @@
         }
 
         #sky-output-list li,
-        #res-output-list li {
+        #res-output-list li,
+        #gp-output-list li {
             margin-bottom: 8px;
             font-size: 14px;
             padding-bottom: 5px;
@@ -287,13 +288,15 @@
         }
 
         #sky-output-list li a,
-        #res-output-list li a {
+        #res-output-list li a,
+        #gp-output-list li a {
             color: #0066cc;
             text-decoration: none;
         }
 
         #sky-output-list li a:hover,
-        #res-output-list li a:hover {
+        #res-output-list li a:hover,
+        #gp-output-list li a:hover {
             text-decoration: underline;
         }
 
@@ -404,6 +407,7 @@
         <div class="tab-group">
             <button class="tab active" onclick="switchTab('skyscraper')">Skyscraper Finder</button>
             <button class="tab" onclick="switchTab('resource')">Resource Page Finder</button>
+            <button class="tab" onclick="switchTab('guestpost')">Guest Post Leads</button>
         </div>
 
         <!-- SKYSCRAPER TAB -->
@@ -613,6 +617,58 @@ favourite-websites
             </div>
         </div>
 
+        <!-- GUEST POST LEADS TAB -->
+        <div id="guestpost" class="tab-content">
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="gp-TechKeywords">Syntax to Find</label>
+                    <textarea name="gp-TechKeywords" id="gp-TechKeywords" placeholder="Backlinks / URLs / Syntax to Find (one per line)" rows="10">/guest-blog
+/guest-post
+/write-for-us
+/write
+/contribute
+/write-a
+/write-for
+/submit
+/submit-a
+contribute
+write for us
+guest post
+guest blog
+submit your
+guest a post
+Write For Us
+write a
+submit a
+guest article
+contribute a</textarea>
+                </div>
+                <div class="input-group">
+                    <label for="gp-mainlist1">Input URLs</label>
+                    <textarea name="gp-mainlist1" id="gp-mainlist1" placeholder="Paste your URLs here" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="gp-outputbox">Output Results</label>
+                <textarea name="gp-outputbox" id="gp-outputbox" placeholder="Filtered URLs will populate here" rows="10"></textarea>
+            </div>
+            <div class="button-group">
+                <button onclick="gpClearData()">Step 1: Clear & Reset</button>
+                <button onclick="gpFilterTech()">Step 2: Find Guest Post Leads</button>
+                <button onclick="FilterURLs('gp')">Step 3: Filter Unwanted URLs</button>
+                <button onclick="gpCopyToClipboard()">Step 4: Copy URLs</button>
+                <button onclick="gpHandleStepFour()">Step 5: Generate Links (Optional)</button>
+            </div>
+            <div class="output-area">
+                <ol id="gp-output-list">
+                    <li>Prospect list: a list of links will appear below from Step 5</li>
+                    <li class="warning">IMPORTANT: In Step 5, please LIMIT results to no more than 500 URLs. Buzzmarker
+                        prospect list CANNOT handle more than 500 URLs, and you will get an error if your list exceeds
+                        500 URLs.</li>
+                </ol>
+            </div>
+        </div>
+
         <div class="toast" id="toast"></div>
 
         <div class="footer-info">
@@ -669,30 +725,16 @@ favourite-websites
             let count = 0;
 
             const unwantedURLs = [
-                '.info', '.biz', '.in', '.ch', '.ru', '.hk', '.rs', '.fr', '.jp', '.mx',
-                '.de', '.nl', '.ie', '.fi', '.tv', '.fm', '.app', '.directory', 'betting',
-                'bingo', 'casino', 'LGBTQ', 'poker', 'porn', 'SEO', 'sponsored', 'tumblr',
-                'twitter.com', 'blogspot', 'wordpress', 'pdf', 'PDF', 'aspx', 'squarespace',
-                'weebly', '.doc', '.docx', 'news', 'magazines', 'journals', 'law', 'forum',
-                'directory', 'SEO', 'http://', 'txt', '.xls', '.xlsx', 'amazonaws',
-                'azurewebsites', 'cloudfront', 'herokuapp', 'typepad', 'firebaseapp',
-                'wixsite', 'cloudapp', 'cloudaccess', 'substack', 'pinterest', 'nitter',
-                'wix', 'blogger', 'blogging', 'qowap', 'fitnell', 'issuu', 'scribd',
-                'zendesk', 'bloomberg', 'slideshare', 'github', 'quora', 'adobe', 'apple',
-                'spotify', 'amazon', 'msn', 'bye.fyi', 'google', 'yahoo', 'facebook',
-                '.pics', '.online', '.best', 'googleusercontent', 'articlebase', 'bbc',
-                'bizbuysell', 'multiply', 'blogadda', 'blogsome', 'blogtalkradio',
-                'cbsnews', 'dailymail', 'dailymotion', 'dallasnews', 'discovery', 'ebay',
-                'ehow', 'ezinearticles', 'flickr', 'guardian', 'huffingtonpost', 'latimes',
-                'linkedin', 'memebase', 'msdn', 'myspace', 'nytimes', 'posterous',
-                'seattleapi', 'canalblog', 'spaces', 'squidoo', '/style', 'travelpod',
-                'tripod', 'tumblr', 'typepad', 'webl', 'youtube', 'skyrock', 'blog138',
-                'free-press-release', 'ecrater', 'livejournal', 'onsugar', 'over-blog',
-                'blog131', 'webcache', 'googleadservices.com', 'books.google.co.uk',
-                'books.google', '2022', '2021', '2020', '2019', '2018', '2017', '2016',
-                '2015', '2014', '2013', '2012', '2011', '2010', '2009', '2008', '2007',
-                '2006', '2005', '2004', '2003', '2002', '2001', '2000', '1999', '1998',
-                '1997', '1996', '1995', '1994', '1993', '1992', '1991', '1990'
+                'blogspot', 'wordpress', 'about', 'googleusercontent', 'amazon', 'yahoo', 
+                'articlebase', 'bbc', 'bizbuysell', 'multiply', 'blogadda', 'blogsome', 
+                'blogtalkradio', 'cbsnews', 'cnn', 'dailymail', 'dailymotion', 'dallasnews', 
+                'discovery', 'ebay', 'ehow', 'ezinearticles', 'facebook', 'flickr', 'guardian', 
+                'ning', 'huffingtonpost', 'latimes', 'linkedin', 'memebase', 'msdn', 'myspace', 
+                'nytimes', 'posterous', 'seattleapi', 'canalblog', 'spaces', 'squidoo', 'style', 
+                'travelpod', 'tripod', 'tumblr', 'typepad', 'weblog', 'webnode', 'weebly', 
+                'youtube', 'skyrock', 'blog138', 'free-press-release', 'ecrater', 'livejournal', 
+                'onsugar', 'over-blog', 'blog', 'blog131', 'webcache', 'google', 'googleadservices.com', 
+                'books.google.co.uk', 'books.google'
             ];
 
             for (const url of listvalues) {
@@ -731,7 +773,7 @@ favourite-websites
                 .replace(/\r/gi, '\n')
                 .replace(/\n+/gi, '\n')
                 .replace(/"/g, '')
-                .replace(/Ã¢â‚¬Âº/g, '/')
+                .replace(/›/g, '/')
                 .split('\n')
                 .filter(line => line.trim());
 
@@ -814,7 +856,7 @@ favourite-websites
                 .replace(/\r/gi, '\n')
                 .replace(/\n+/gi, '\n')
                 .replace(/"/g, '')
-                .replace(/Ã¢â‚¬Âº/g, '/')
+                .replace(/›/g, '/')
                 .split('\n')
                 .filter(line => line.trim());
 
@@ -849,6 +891,89 @@ favourite-websites
         function resHandleStepFour() {
             const outputList = document.getElementById('res-output-list');
             const outputBox = document.getElementById('res-outputbox');
+            if (!outputBox.value.trim()) {
+                showToast('No URLs to generate links from.', true);
+                return;
+            }
+
+            const lines = outputBox.value.split('\n').filter(line => line.trim());
+            if (lines.length > 500) {
+                showToast('Error: List exceeds 500 URLs. Please reduce the number of URLs.', true);
+                return;
+            }
+
+            const uniqueLines = [...new Set(lines.map(line => line.trim().toLowerCase()))];
+            outputList.innerHTML = '';
+
+            uniqueLines.forEach((textLine, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="${textLine}" target="_blank"><span style="color: #333;">${index + 1}.</span> ${textLine}</a>`;
+                outputList.appendChild(li);
+            });
+
+            window.scrollTo({ top: outputList.offsetTop, behavior: 'smooth' });
+            showToast('Links generated successfully!');
+        }
+
+        // Guest Post Leads Functions
+        function gpClearData() {
+            document.getElementById('gp-mainlist1').value = '';
+            document.getElementById('gp-outputbox').value = '';
+            document.getElementById('gp-output-list').innerHTML = `
+                <li>Prospect list: a list of links will appear below from Step 5</li>
+                <li class="warning">IMPORTANT: In Step 5, please LIMIT results to no more than 500 URLs. Buzzmarker prospect list CANNOT handle more than 500 URLs, and you will get an error if your list exceeds 500 URLs.</li>
+            `;
+            showToast('Interface cleared successfully!');
+        }
+
+        function gpFilterTech() {
+            const mainlist = document.getElementById('gp-mainlist1').value;
+            const TechWords = document.getElementById('gp-TechKeywords').value;
+
+            if (!mainlist.trim()) {
+                showToast('Please enter URLs to filter.', true);
+                return;
+            }
+
+            let listvalues = mainlist
+                .replace(/\r/gi, '\n')
+                .replace(/\n+/gi, '\n')
+                .replace(/"/g, '')
+                .replace(/›/g, '/')
+                .split('\n')
+                .filter(line => line.trim());
+
+            const TargetKWs = TechWords.split('\n').filter(kw => kw.trim());
+            const newlist = [];
+
+            for (const url of listvalues) {
+                for (const kw of TargetKWs) {
+                    if (url.includes(kw)) {
+                        newlist.push(url);
+                        break;
+                    }
+                }
+            }
+
+            const uniqueList = removeDuplicatesByDomain(newlist);
+            document.getElementById('gp-outputbox').value = uniqueList.join('\n');
+            showToast(`${uniqueList.length} unique matches found!`);
+        }
+
+        function gpCopyToClipboard() {
+            const outputBox = document.getElementById('gp-outputbox');
+            if (!outputBox.value.trim()) {
+                showToast('No URLs to copy.', true);
+                return;
+            }
+            outputBox.select();
+            document.execCommand('copy');
+            showToast('URLs copied to clipboard!');
+        }
+
+        function gpHandleStepFour() {
+            const outputList = document.getElementById('gp-output-list');
+            const outputBox = document.getElementById('gp-outputbox');
             if (!outputBox.value.trim()) {
                 showToast('No URLs to generate links from.', true);
                 return;
